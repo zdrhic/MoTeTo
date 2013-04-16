@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MoTeTo</string>
+    <string name="app_name_full">MoTeTo - Mobile Testing Tool v0.1</string>
+    
+    <string name="tests">Tests</string>
+    <string name="properties">Properties</string>
+    <string name="help">Help</string>        
+    <string name="continue_">Continue</string><!--continue is reserved keyword-->
+    
+    <string name="general">General</string>
+    <string name="next_task_auto">Auto next task</string>
+    <string name="next_task_auto_detail">Automatically switches to next task</string>
+    <string name="stream">Stream</string>
+    <string name="address">Address</string>        
+    <string name="address_detail">Stream source IP address</string>        
+    <string name="max_fps">Max FPS</string>
+    <string name="max_fps_detail">Max FPS of video stream</string>
+    <string name="enabled">Enabled</string>
+    <string name="enabled_detail">Enables video stream</string>
+    <string name="workspace">Workspace folder</string>
+    <string name="workspace_detail">Sets workspace folder</string>    
+    
+    <string name="help_first">1. Use double flick gesture to navigate among screens</string>
+    <string name="help_second">Tasklist &lt;=&gt; Log &lt;=&gt; Map &lt;=&gt; Stream</string>
+    <string name="help_third">2. Use gestures to insert markers in log screen</string>
+    
+    <string name="load">Load</string>
+    
+</resources>

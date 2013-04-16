@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <EditTextPreference
+        android:key="workspace"
+        android:title="@string/workspace" 
+        android:summary="@string/workspace_detail"
+        android:dialogTitle="@string/workspace"
+        android:dialogMessage=""        
+        android:defaultValue="" />
+    
+    <CheckBoxPreference 
+        android:key="next_task_auto"
+        android:summary="@string/next_task_auto_detail"
+        android:title="@string/next_task_auto" 
+        android:defaultValue="false"
+        />                  
+
+    <PreferenceCategory 
+        android:title="@string/stream"
+        android:key="stream">
+        
+        <CheckBoxPreference            
+            android:key="enabled"
+            android:summary="@string/enabled_detail"
+            android:title="@string/enabled" 
+            android:defaultValue="false" />  
+
+        <EditTextPreference
+            android:key="address"
+            android:title="@string/address" 
+            android:summary="@string/address_detail"
+            android:dialogTitle="@string/address"
+            android:dialogMessage=""    
+            android:defaultValue="192.168.1.2" />
+        
+        <EditTextPreference
+            android:key="max_fps"
+            android:title="@string/max_fps" 
+            android:summary="@string/max_fps_detail"
+            android:dialogTitle="@string/max_fps"
+            android:dialogMessage=""    
+            android:defaultValue="25" />
+        
+    </PreferenceCategory>
+    
+</PreferenceScreen>
