@@ -60,4 +60,18 @@ public class WorkSpace {
 
         return sessions;
     }
+
+    public List<String> getUserNames() {
+        List<String> userNames = new LinkedList<String>();
+
+        userNames.add("René");
+        userNames.add("Rudolf");
+        userNames.add("Robert");
+
+        return userNames;
+    }
+    
+    public Session getNewSession(Test test, String userName){
+        return new Session(test, "TODO", userName);
+    }
 }

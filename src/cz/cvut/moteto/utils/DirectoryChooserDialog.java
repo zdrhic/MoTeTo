@@ -1,4 +1,4 @@
-package cz.cvut.moteto.main;
+package cz.cvut.moteto.utils;
 
 import java.io.File;
 import java.io.IOException;

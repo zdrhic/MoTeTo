@@ -4,17 +4,17 @@
  */
 package cz.cvut.moteto.main;
 
+import android.app.ActionBar;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 import cz.cvut.moteto.model.Test;
 import cz.cvut.moteto.model.WorkSpace;
-import java.util.LinkedList;
 import java.util.List;
 
 public class TestsActivity extends ListActivity {
@@ -25,7 +25,10 @@ public class TestsActivity extends ListActivity {
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-        //setContentView(R.layout.tests);
+
+        ActionBar actionBar = getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
         ListAdapter adapter = createAdapter();
         setListAdapter(adapter);
     }
@@ -42,5 +45,16 @@ public class TestsActivity extends ListActivity {
         List<Test> tests = WorkSpace.getInstance().getTests();
         ListAdapter adapter = new ArrayAdapter<Test>(this, android.R.layout.simple_list_item_1, tests);
         return adapter;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

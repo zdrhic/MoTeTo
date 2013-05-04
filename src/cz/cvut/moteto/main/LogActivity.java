@@ -5,17 +5,24 @@
 package cz.cvut.moteto.main;
 
 import android.app.ActionBar;
-import android.app.ActionBar.Tab;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import cz.cvut.moteto.main.R;
+import cz.cvut.moteto.main.NewSessionFragment;
+import cz.cvut.moteto.main.SessionsFragment;
+import cz.cvut.moteto.model.Session;
 import cz.cvut.moteto.model.Test;
 import cz.cvut.moteto.utils.TabListener;
 
-public class TestActivity extends Activity {
+/**
+ *
+ * @author Jan Zdrha
+ */
+public class LogActivity extends Activity {
 
+    private Session session;
     private Test test;
 
     /**
@@ -25,26 +32,28 @@ public class TestActivity extends Activity {
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         Intent intent = getIntent();
+        this.session = (Session) intent.getSerializableExtra("session");
         this.test = (Test) intent.getSerializableExtra("test");
+        //setContentView(R.layout.tests);
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-        Tab tab = actionBar.newTab()
-                .setText(R.string.new_session)
-                .setTabListener(new TabListener<NewSessionFragment>(
-                this, NewSessionFragment.class.getName(), NewSessionFragment.class));
+        ActionBar.Tab tab = actionBar.newTab()
+                .setText(R.string.log)
+                .setTabListener(new TabListener<LogViewFragment>(
+                this, LogViewFragment.class.getName(), LogViewFragment.class));
         actionBar.addTab(tab);
 
         tab = actionBar.newTab()
-                .setText(R.string.sessions)
-                .setTabListener(new TabListener<SessionsFragment>(
-                this, SessionsFragment.class.getName(), SessionsFragment.class));
+                .setText(R.string.map)
+                .setTabListener(new TabListener<MapViewFragment>(
+                this, MapViewFragment.class.getName(), MapViewFragment.class));
         actionBar.addTab(tab);
     }
 
-    public Test getTest() {
-        return this.test;
+    public Session getSession() {
+        return this.session;
     }
 
     @Override
