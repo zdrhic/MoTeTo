@@ -43,7 +43,7 @@ public class SessionActivity extends Activity {
         Intent intent = getIntent();
         this.session = (Session) intent.getSerializableExtra("session");
         this.session.start();
-        this.test = (Test) intent.getSerializableExtra("test");
+        this.setTest((Test) intent.getSerializableExtra("test"));
 
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -51,14 +51,14 @@ public class SessionActivity extends Activity {
 
         ActionBar.Tab tab = actionBar.newTab()
                 .setText(R.string.tasklist)
-                .setTabListener(new TabListener<MapViewFragment>(
-                this, MapViewFragment.class.getName(), MapViewFragment.class));
+                .setTabListener(new TabListener<TasklistFragment>(
+                this, TasklistFragment.class.getName(), TasklistFragment.class));
         actionBar.addTab(tab);
 
         tab = actionBar.newTab()
                 .setText(R.string.log)
-                .setTabListener(new TabListener<LogViewFragment>(
-                this, LogViewFragment.class.getName(), LogViewFragment.class));
+                .setTabListener(new TabListener<LogFragment>(
+                this, LogFragment.class.getName(), LogFragment.class));
         actionBar.addTab(tab);
 
         tab = actionBar.newTab()
@@ -110,12 +110,13 @@ public class SessionActivity extends Activity {
     private void endSessionDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        builder.setTitle("Confirm");
-        builder.setMessage("Are you sure?");
+        builder.setTitle("End Session");
+        builder.setMessage("Do you really want to end the current session?");
 
         builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 session.end();
+                session.save();
                 finish();
                 dialog.dismiss();
             }
@@ -142,4 +143,12 @@ public class SessionActivity extends Activity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+	public Test getTest() {
+		return test;
+	}
+
+	public void setTest(Test test) {
+		this.test = test;
+	}
 }

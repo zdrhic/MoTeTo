@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<test>
+    <name>Navigace na Karláku</name>
+    <markers>
+        <marker id="default">
+            <marker name="Závažný problém s aplikací" gesture="1235789">
+                <marker name="Aplikace nejde spustit"></marker>
+                <marker name="Aplikace spadla" gesture="1598753"></marker>
+                <marker name="Aplikace zamrzla"></marker>
+            </marker>
+            <marker name="Drobný problém s aplikací">
+                <marker name="Uživatel váhá, jak pokračovat"></marker>
+                <marker name="Uživatel si není jistý, kde nalézt požadovanou funkci"></marker>
+                <marker name="Usability problém"></marker>
+            </marker>
+            <marker name="Problém s prostředím">
+                <marker name="Uživat zaškobrtl"></marker>
+                <marker name="Uživatel vyrazil špatným směrem"></marker>
+                <marker name="Uživatel upustil zařízení"></marker>
+                <marker name="Uživatel narazil do stromu"></marker>
+                <marker name="Začalo pršet, uživatel chce domů"></marker>
+                <marker name="Přišla vichřice, uživatel se bojí padajících stromů"></marker>
+            </marker>
+            <marker name="Použití funkce aplikace">
+                <marker name="Používá zpět"></marker>
+                <marker name="Používá menu"></marker>
+                <marker name="Ryhlá volba"></marker>
+                <marker name="Zoomuje"></marker>
+            </marker>
+            <marker name="Pomoc od moderátora"></marker>
+            <marker name="Dotaz na uživatele"></marker>
+        </marker>
+    </markers>
+    <tasks>
+        <task name="Najít záchody na pravém křídle" markers="default"></task>
+        <task name="Najít kancelář 321" markers="default"></task>
+        <task name="Projít dveřmi na schodiště" markers="default"></task>
+        <task name="Jít po schodech do 4. patra" markers="default"></task>
+    </tasks>
+    <participants>
+        <participant name="Petr"></participant>
+        <participant name="Jana"></participant>
+        <participant name="Martin"></participant>
+        <participant name="Zuzana"></participant>
+        <participant name="Rudolf"></participant>
+    </participants>
+    <map>
+        <filename>4np.jpg</filename>
+        <locations>
+            <location name="Dvere vytahu. 3.patro">
+                <coord>
+                    <x>360</x>
+                    <y>990</y>
+                </coord>
+            </location>
+            <location name="Dvere na chodbu ke schodisti. 3.patro">
+                <coord>
+                    <x>1390</x>
+                    <y>1200</y>
+                </coord>
+            </location>
+            <location name="Dvere do leveho kridla od schodiste. 3.patro">
+                <coord>
+                    <x>1434</x>
+                    <y>1212</y>
+                </coord>
+            </location>
+            <location name="Dvere do praveho kridla od schodiste. 3. patro">
+                <coord>
+                    <x>1554</x>
+                    <y>1206</y>
+                </coord>
+            </location>
+            <location name="Dvere z praveho kridla ke schodisti. 3. patro.">
+                <coord>
+                    <x>1600</x>
+                    <y>1218</y>
+                </coord>
+            </location>
+            <location name="Roh chodby prave kridlo.">
+                <coord>
+                    <x>2400</x>
+                    <y>1248</y>
+                </coord>
+            </location>
+            <location name="Media Lab 318.">
+                <coord>
+                    <x>2280</x>
+                    <y>1107</y>
+                </coord>
+            </location>
+            <location name="Zachody prave kridlo.">
+                <coord>
+                    <x>2293</x>
+                    <y>985</y>
+                </coord>
+            </location>
+            <location name="Kancelar pocitacove katedry 319.">
+                <coord>
+                    <x>2244</x>
+                    <y>1398</y>
+                </coord>
+            </location>
+            <location name="Kancelar 321.">
+                <coord>
+                    <x>2025</x>
+                    <y>1398</y>
+                </coord>
+            </location>
+        </locations>
+    </map>
+</test>

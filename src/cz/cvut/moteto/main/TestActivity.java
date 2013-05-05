@@ -12,12 +12,10 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import cz.cvut.moteto.main.R;
 import cz.cvut.moteto.model.Test;
+import cz.cvut.moteto.model.WorkSpace;
 import cz.cvut.moteto.utils.TabListener;
 
 public class TestActivity extends Activity {
-
-    private Test test;
-
     /**
      * Called when the activity is first created.
      */
@@ -25,7 +23,8 @@ public class TestActivity extends Activity {
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         Intent intent = getIntent();
-        this.test = (Test) intent.getSerializableExtra("test");
+        Test test = (Test) intent.getSerializableExtra("test");
+        WorkSpace.getInstance().setCurrentTest(test);
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -41,10 +40,6 @@ public class TestActivity extends Activity {
                 .setTabListener(new TabListener<SessionsFragment>(
                 this, SessionsFragment.class.getName(), SessionsFragment.class));
         actionBar.addTab(tab);
-    }
-
-    public Test getTest() {
-        return this.test;
     }
 
     @Override

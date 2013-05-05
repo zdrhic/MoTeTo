@@ -4,16 +4,23 @@
  */
 package cz.cvut.moteto.model;
 
+import java.io.Serializable;
+import java.util.List;
+
 /**
  *
  * @author Jan Zdrha
  */
-public class Task {
+public class Task implements Serializable {
 
     private String path;
+    private int number;
+    private List<Marker> markers;
 
-    public Task(String path) {
+    public Task(int number, String path, List<Marker> markers) {
         this.path = path;
+        this.number = number;
+        this.markers = markers;
     }
 
     /**
@@ -21,5 +28,13 @@ public class Task {
      */
     public String getPath() {
         return path;
+    }
+
+    public String toString() {
+        return number+". "+path;
+    }
+    
+    public List<Marker> getMarkers() {
+    	return markers;
     }
 }

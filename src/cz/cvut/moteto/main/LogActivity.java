@@ -23,7 +23,6 @@ import cz.cvut.moteto.utils.TabListener;
 public class LogActivity extends Activity {
 
     private Session session;
-    private Test test;
 
     /**
      * Called when the activity is first created.
@@ -33,7 +32,7 @@ public class LogActivity extends Activity {
         super.onCreate(icicle);
         Intent intent = getIntent();
         this.session = (Session) intent.getSerializableExtra("session");
-        this.test = (Test) intent.getSerializableExtra("test");
+        this.session.open();
         //setContentView(R.layout.tests);
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -55,7 +54,7 @@ public class LogActivity extends Activity {
     public Session getSession() {
         return this.session;
     }
-
+    
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

@@ -9,8 +9,19 @@ import android.preference.PreferenceManager;
 import android.widget.ArrayAdapter;
 import cz.cvut.moteto.MoTeTo;
 import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -19,6 +30,7 @@ import java.util.List;
 public class WorkSpace {
 
     private static WorkSpace instance = new WorkSpace();
+    private Test currentTest;
 
     public static WorkSpace getInstance() {
         return WorkSpace.instance;
@@ -27,51 +39,65 @@ public class WorkSpace {
     private WorkSpace() {
     }
 
-    private String getWorkspaceFolder() {
+    public String getWorkspaceFolder() {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(MoTeTo.getAppContext());
-        return sharedPrefs.getString("workspace", "/");
+        //return sharedPrefs.getString("workspace", "/");
+        return "/cache/test-data/";
     }
 
     public List<Test> getTests() {
         List<Test> tests = new LinkedList<Test>();
 
-        tests.add(new Test("test 1"));
-        tests.add(new Test("test 2"));
-        tests.add(new Test("test 3"));
+//         tests.add(new Test("test"));
+//         tests.add(new Test("test 2"));
+//         tests.add(new Test("test 3"));
 
+       File f = new File(this.getWorkspaceFolder());
 
-//        List<Test> tests = new LinkedList<Test>();
-//        File f = new File(this.getWorkspaceFolder());
-//
-//        File[] files = f.listFiles();
-//        for (File file : files) {
-//            Test test = new Test(file.getPath());
-//            tests.add(test);
-//        }
+       File[] files = f.listFiles();
+       for (File file : files) {
+    	   String path = file.getName();
+    	   if (path.endsWith(".xml")) {
+    		   Test test = new Test(path.replace(".xml", ""));
+    		   tests.add(test);
+    	   }
+       }
         return tests;
     }
 
-    public List<Session> getSessions(Test test) {
-        List<Session> sessions = new LinkedList<Session>();
+	public Test getCurrentTest() {
+		return currentTest;
+	}
 
-        sessions.add(new Session(test, test.toString() + "session 1", ""));
-        sessions.add(new Session(test, test.toString() + "session 2", ""));
-        sessions.add(new Session(test, test.toString() + "session 3", ""));
+	public void setCurrentTest(Test currentTest) {
+		this.currentTest = currentTest;
+	}
 
-        return sessions;
-    }
+	public static Document loadXML(String path) {
+	    Document doc = null;
+        try {
+            URL url;
+            url = new URL("file://"+path);
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder db;
+            db = dbf.newDocumentBuilder();
 
-    public List<String> getUserNames() {
-        List<String> userNames = new LinkedList<String>();
+            doc = db.parse(new InputSource(url.openStream()));
+            doc.getDocumentElement().normalize();
 
-        userNames.add("René");
-        userNames.add("Rudolf");
-        userNames.add("Robert");
-
-        return userNames;
-    }
-    
-    public Session getNewSession(Test test, String userName){
-        return new Session(test, "TODO", userName);
-    }
+        } catch (MalformedURLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (ParserConfigurationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (SAXException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return doc;
+	}
 }

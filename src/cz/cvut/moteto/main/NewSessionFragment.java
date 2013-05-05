@@ -29,25 +29,25 @@ import java.util.List;
 public class NewSessionFragment extends Fragment {
 
     private Test test;
-    private String userName;
+    private Spinner spinner;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        this.test = ((TestActivity) getActivity()).getTest();
+        test = WorkSpace.getInstance().getCurrentTest();
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.new_session, container, false);
 
-        Spinner spinner = (Spinner) view.findViewById(R.id.names);
+        spinner = (Spinner) view.findViewById(R.id.names);
         ArrayAdapter adapter = createAdapter();
         spinner.setAdapter(adapter);
 
-        Button newSession = (Button) view.findViewById(R.id.new_session_btn);
+        Button newSession = (Button) view.findViewById(R.id.start_session_btn);
         newSession.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 Intent myIntent = new Intent(getActivity(), SessionActivity.class);
-                myIntent.putExtra("test", test);
-                Session session = WorkSpace.getInstance().getNewSession(test, userName);
+                Session session = test.getNewSession(spinner.getSelectedItem().toString());
+                session.addNote("Ahoj");
                 myIntent.putExtra("session", session);
                 getActivity().startActivity(myIntent);
             }
@@ -56,8 +56,8 @@ public class NewSessionFragment extends Fragment {
     }
 
     protected ArrayAdapter createAdapter() {
-        List<String> userNames = WorkSpace.getInstance().getUserNames();
-        ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, userNames);
+        List<String> participants = WorkSpace.getInstance().getCurrentTest().getParticipants();
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, participants);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         return adapter;
     }

@@ -4,12 +4,19 @@
  */
 package cz.cvut.moteto.model;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 /**
  *
@@ -19,17 +26,25 @@ public class Session implements Serializable {
 
     private Test test;
     private String path;
+    private String name;
     private String participant;
-    private HashMap<Task, LinkedList<Marker>> markers;
     private Calendar beginning;
     private Calendar end;
     private boolean isRunning;
+    private List<Note> notes;
 
-    public Session(Test test, String path, String participant) {
+    public Session(Test test, String path) {
         this.test = test;
         this.path = path;
-        this.markers = new HashMap<Task, LinkedList<Marker>>();
+        File f = new File(path);
+        this.name = f.getName().replace(".xml", "");
         this.isRunning = false;
+        notes = new LinkedList<Note>();
+    }
+
+    public Session(Test test, String path, String participant) {
+        this(test, path);
+        this.participant = participant;
     }
 
     /**
@@ -48,25 +63,7 @@ public class Session implements Serializable {
 
     @Override
     public String toString() {
-        return this.path;
-    }
-
-    public void addMarker(Task task, Marker marker) {
-        if (!this.markers.containsKey(task)) {
-            this.markers.put(task, new LinkedList<Marker>());
-        }
-        this.markers.get(task).add(marker);
-    }
-
-    public List<Marker> getMarkers(Task task) {
-        if (!this.markers.containsKey(task)) {
-            return new LinkedList<Marker>();
-        }
-        return this.markers.get(task);
-    }
-
-    public boolean hasMarker(Task task) {
-        return !this.getMarkers(task).isEmpty();
+        return name;
     }
 
     public Calendar getBeginning() {
@@ -90,4 +87,81 @@ public class Session implements Serializable {
     public boolean isRunning() {
         return this.isRunning;
     }
+
+    public void addNote(String text) {
+    	Note note = new Note(Calendar.getInstance(), text);
+    	addNote(note);
+    }
+    
+    public void addNote(Note note) {
+    	notes.add(note);
+    }
+
+	public List<Note> getNotes() {
+		return notes;
+	}
+    
+    public void open() {
+    	Document doc = WorkSpace.loadXML(path);
+    	Element el;
+    	
+    	el = (Element) doc.getElementsByTagName("participant").item(0);
+    	participant = el.getTextContent();
+    	
+    	el = (Element) doc.getElementsByTagName("beginning").item(0);
+    	beginning = Calendar.getInstance();
+    	beginning.setTimeInMillis(Long.parseLong(el.getTextContent()));
+
+    	el = (Element) doc.getElementsByTagName("end").item(0);
+    	end = Calendar.getInstance();
+    	end.setTimeInMillis(Long.parseLong(el.getTextContent()));
+    	
+    	notes.clear();
+    	NodeList nodeList = doc.getElementsByTagName("note");
+    	for (int i = 0; i < nodeList.getLength(); i+=1) {
+    		el = (Element) nodeList.item(i);
+    		Calendar time = Calendar.getInstance();
+    		time.setTimeInMillis(Long.parseLong(el.getAttribute("time")));
+    		String text = el.getAttribute("text");
+    		notes.add(new Note(time, text));
+    	}
+    }
+
+    public void save() {
+    	StringBuilder sb = new StringBuilder();
+    	
+    	sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<session>\n");
+    	
+    	sb.append("<participant>");
+    	sb.append(participant);
+    	sb.append("</participant>\n");
+    	
+    	sb.append("<beginning>");
+    	sb.append(beginning.getTimeInMillis());
+    	sb.append("</beginning>\n");
+    	
+    	sb.append("<end>");
+    	sb.append(end.getTimeInMillis());
+    	sb.append("</end>\n");
+    	
+    	sb.append("<notes>\n");
+    	
+    	for (Note note: notes) {
+    		sb.append(note.toXML());
+    	}
+    	
+    	sb.append("</notes>\n");
+    	
+    	sb.append("</session>\n");
+    	
+    	new File(path).getParentFile().mkdirs();
+    	try {
+    		FileWriter fstream = new FileWriter(this.path);
+    		fstream.write(sb.toString());
+    		fstream.close();
+    	} catch(IOException e) {
+    		
+    	}
+    }
+
 }

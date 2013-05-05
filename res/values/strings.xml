@@ -34,5 +34,6 @@
     <string name="sessions">Sessions</string>
     
     <string name="load">Load</string>
+    <string name="start_session">Start Session</string>
     
 </resources>

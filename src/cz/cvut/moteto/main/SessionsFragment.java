@@ -21,20 +21,22 @@ import java.util.List;
  * @author Jan Zdrha
  */
 public class SessionsFragment extends ListFragment {
-
-    private Test test;
-
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-        this.test = ((TestActivity) getActivity()).getTest();
-
-        ListAdapter adapter = createAdapter(test);
+        ListAdapter adapter = createAdapter(WorkSpace.getInstance().getCurrentTest());
         setListAdapter(adapter);
+    }
+    
+    @Override
+    public void onResume() {
+        ListAdapter adapter = createAdapter(WorkSpace.getInstance().getCurrentTest());
+        setListAdapter(adapter);
+    	super.onResume();
     }
 
     protected ListAdapter createAdapter(Test test) {
-        List<Session> sessions = WorkSpace.getInstance().getSessions(test);
+        List<Session> sessions = test.getSessions();
         ListAdapter adapter = new ArrayAdapter<Session>(getActivity(), android.R.layout.simple_list_item_1, sessions);
         return adapter;
     }
@@ -43,7 +45,7 @@ public class SessionsFragment extends ListFragment {
     public void onListItemClick(ListView l, View v, int position, long id) {
         Session session = (Session) getListAdapter().getItem(position);
         Intent myIntent = new Intent(getActivity(), LogActivity.class);
-        myIntent.putExtra("test", test);
+        //myIntent.putExtra("test", test);
         myIntent.putExtra("session", session);
         getActivity().startActivity(myIntent);
     }
