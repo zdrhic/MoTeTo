@@ -313,6 +313,11 @@ public class ImageMap extends ImageView {
 		mIdToArea.put(a.getId(), a);
 	}	
 	
+	public void addDotArea(int id, String name, float x, float y, int radius) {
+		DotArea a = new DotArea(id, name, x, y, radius);
+		addArea(a);
+	}
+	
 	public void addBubble(String text, int areaId ) {
 		if (mBubbleMap.get(areaId) == null) {
 			Bubble b = new Bubble(text,areaId);
@@ -431,7 +436,7 @@ public class ImageMap extends ImageView {
 		textPaint = new Paint();
 		textPaint.setColor(0xFF000000);
 		textPaint.setTextSize(30);
-		textPaint.setTypeface(Typeface.SERIF);
+		textPaint.setTypeface(Typeface.SANS_SERIF);
 		textPaint.setTextAlign(Paint.Align.CENTER);
 		textPaint.setAntiAlias(true);
 
@@ -1453,6 +1458,67 @@ public class ImageMap extends ImageView {
 		}		
 	}
 	
+	class DotArea extends CircleArea {
+		Paint borderPaint, innerPaint;
+		DotArea(int id, String name, float x, float y, float radius) {
+			super(id, name, x, y, radius);
+			borderPaint = new Paint();
+			borderPaint.setColor(0xFF152D7C);
+			innerPaint = new Paint();
+			innerPaint.setColor(0xFF438ACC);
+		}
+
+		public void onDraw(Canvas canvas) {
+			String text = ""+getId();
+			float x = getOriginX()*mResizeFactorX;
+			float y = getOriginY()*mResizeFactorY;
+			Rect bounds = new Rect();
+			textPaint.setTextScaleX(1.0f);
+			textPaint.getTextBounds(text, 0, text.length(), bounds);
+			int _h = bounds.bottom-bounds.top+20;
+			int _w = bounds.right-bounds.left+20;
+			
+//			if (_w>mViewWidth) {
+//				// too long for the display width...need to scale down
+//				float newscale=((float)mViewWidth/(float)_w);
+//				textPaint.setTextScaleX(newscale);
+//				textPaint.getTextBounds(text, 0, text.length(), bounds);
+//				_h = bounds.bottom-bounds.top+20;
+//				_w = bounds.right-bounds.left+20;
+//			}
+			
+			int _baseline = _h-bounds.bottom;
+			float _left = x - (_w/2);
+			float _top = y - _h + 20;
+			
+			// try to keep the bubble on screen
+			if (_left < 0) {
+				_left = 0;
+			}
+			if ((_left + _w) > mExpandWidth) {
+				_left = mExpandWidth - _w;
+			}
+			if (_top < 0) {
+				_top = y + 20;
+			}
+		
+			int borderWidth = 2;
+			
+			// Draw a shadow of the bubble
+			float l = _left + mScrollLeft - borderWidth;
+			float t = _top + mScrollTop -borderWidth;
+			canvas.drawRoundRect(new RectF(l,t,l+_w+2*borderWidth,t+_h+2*borderWidth), 20.0f, 20.0f, borderPaint);
+			
+		    // draw the bubble
+			l = _left + mScrollLeft;
+			t = _top + mScrollTop;
+			canvas.drawRoundRect(new RectF(l,t,l+_w,t+_h), 20.0f, 20.0f, innerPaint);
+		    
+		    // draw the message
+		    canvas.drawText(text,l+(_w/2),t+_baseline-10,textPaint);
+		}
+	}
+	
 	/**
 	 * information bubble class
 	 */
@@ -1490,14 +1556,14 @@ public class ImageMap extends ImageView {
 			_h = bounds.bottom-bounds.top+20;
 			_w = bounds.right-bounds.left+20;
 			
-			if (_w>mViewWidth) {
-				// too long for the display width...need to scale down
-				float newscale=((float)mViewWidth/(float)_w);
-				textPaint.setTextScaleX(newscale);
-				textPaint.getTextBounds(text, 0, _text.length(), bounds);
-				_h = bounds.bottom-bounds.top+20;
-				_w = bounds.right-bounds.left+20;
-			}
+//			if (_w>mViewWidth) {
+//				// too long for the display width...need to scale down
+//				float newscale=((float)mViewWidth/(float)_w);
+//				textPaint.setTextScaleX(newscale);
+//				textPaint.getTextBounds(text, 0, _text.length(), bounds);
+//				_h = bounds.bottom-bounds.top+20;
+//				_w = bounds.right-bounds.left+20;
+//			}
 			
 			_baseline = _h-bounds.bottom;
 			_left = _x - (_w/2);
