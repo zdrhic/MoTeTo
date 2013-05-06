@@ -4,11 +4,10 @@
  */
 package cz.cvut.moteto.main;
 
-import android.app.Fragment;
-
 /**
  *
  * @author Jan Zdrha
  */
-public class MapViewFragment extends Fragment {
+public class MapViewFragment extends MapFragment {
+
 }

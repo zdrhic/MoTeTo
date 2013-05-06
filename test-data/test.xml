@@ -43,69 +43,50 @@
         <participant name="Martin"></participant>
         <participant name="Zuzana"></participant>
         <participant name="Rudolf"></participant>
+        <participant name="Honzik"></participant>
     </participants>
     <map>
         <filename>4np.jpg</filename>
         <locations>
             <location name="Dvere vytahu. 3.patro">
-                <coord>
-                    <x>360</x>
-                    <y>990</y>
-                </coord>
+                <x>360</x>
+                <y>990</y>
             </location>
             <location name="Dvere na chodbu ke schodisti. 3.patro">
-                <coord>
-                    <x>1390</x>
-                    <y>1200</y>
-                </coord>
+                <x>1390</x>
+                <y>1200</y>
             </location>
             <location name="Dvere do leveho kridla od schodiste. 3.patro">
-                <coord>
-                    <x>1434</x>
-                    <y>1212</y>
-                </coord>
+                <x>1434</x>
+                <y>1212</y>
             </location>
             <location name="Dvere do praveho kridla od schodiste. 3. patro">
-                <coord>
-                    <x>1554</x>
-                    <y>1206</y>
-                </coord>
+                <x>1554</x>
+                <y>1206</y>
             </location>
             <location name="Dvere z praveho kridla ke schodisti. 3. patro.">
-                <coord>
-                    <x>1600</x>
-                    <y>1218</y>
-                </coord>
+                <x>1600</x>
+                <y>1218</y>
             </location>
             <location name="Roh chodby prave kridlo.">
-                <coord>
-                    <x>2400</x>
-                    <y>1248</y>
-                </coord>
+                <x>2400</x>
+                <y>1248</y>
             </location>
             <location name="Media Lab 318.">
-                <coord>
-                    <x>2280</x>
-                    <y>1107</y>
-                </coord>
+                <x>2280</x>
+                <y>1107</y>
             </location>
             <location name="Zachody prave kridlo.">
-                <coord>
-                    <x>2293</x>
-                    <y>985</y>
-                </coord>
+                <x>2293</x>
+                <y>985</y>
             </location>
             <location name="Kancelar pocitacove katedry 319.">
-                <coord>
-                    <x>2244</x>
-                    <y>1398</y>
-                </coord>
+                <x>2244</x>
+                <y>1398</y>
             </location>
             <location name="Kancelar 321.">
-                <coord>
-                    <x>2025</x>
-                    <y>1398</y>
-                </coord>
+                <x>2025</x>
+                <y>1398</y>
             </location>
         </locations>
     </map>
