@@ -4,10 +4,12 @@
     <string name="app_name_full">MoTeTo - Mobile Testing Tool v0.1</string>
     
     <string name="tests">Tests</string>
+    <string name="test">Test</string>
     <string name="properties">Properties</string>
     <string name="help">Help</string>        
     <string name="continue_">Continue</string><!--continue is reserved keyword-->
     <string name="log">Log</string>
+    <string name="session">Session</string>
     <string name="map">Map</string>
     <string name="tasklist">Tasklist</string>
     <string name="stream">Stream</string>

@@ -49,6 +49,7 @@ public class NewSessionFragment extends Fragment {
                 Session session = test.getNewSession(spinner.getSelectedItem().toString());
                 session.addNote("Ahoj");
                 myIntent.putExtra("session", session);
+                myIntent.putExtra("test", test);
                 getActivity().startActivity(myIntent);
             }
         });

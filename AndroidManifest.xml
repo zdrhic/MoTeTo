@@ -16,22 +16,22 @@
             </intent-filter>
         </activity>
         <activity android:name="HelpActivity"
-                  android:label="@string/app_name">            
+                  android:label="@string/help">            
         </activity>
         <activity android:name="PropertiesActivity"
-                  android:label="@string/app_name">            
+                  android:label="@string/properties">            
         </activity>
         <activity android:name="TestsActivity"
-                  android:label="@string/app_name">            
+                  android:label="@string/tests">            
         </activity>
         <activity android:name="TestActivity"
-                  android:label="@string/app_name">            
+                  android:label="@string/test">            
         </activity>
         <activity android:name="LogActivity"
-                   android:label="@string/app_name">            
+                   android:label="@string/log">            
         </activity>
         <activity android:name="SessionActivity"
-                   android:label="@string/app_name">            
+                   android:label="@string/session">            
         </activity>
     </application>
 </manifest>
