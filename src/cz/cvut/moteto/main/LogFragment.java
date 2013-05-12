@@ -11,21 +11,18 @@ import android.app.Fragment;
 import android.content.Context;
 import android.gesture.Gesture;
 import android.gesture.GestureLibraries;
+import android.gesture.GestureLibrary;
 import android.gesture.GestureOverlayView;
 import android.gesture.GestureOverlayView.OnGesturePerformedListener;
+import android.gesture.Prediction;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.Toast;
-import android.gesture.Gesture;
-import android.gesture.GestureLibraries;
-import android.gesture.GestureLibrary;
-import android.gesture.GestureOverlayView;
-import android.gesture.Prediction;
-import android.gesture.GestureOverlayView.OnGesturePerformedListener;
 import cz.cvut.moteto.model.Task;
 
 /**
@@ -43,15 +40,22 @@ public class LogFragment extends Fragment implements
 			Bundle savedInstanceState) {
 		SessionActivity activity = (SessionActivity) getActivity();
 		activity.addSelectedTaskChangedListener(this);
+		
 		// Load gestures from raw file 'gestures'
 		gestureLib = GestureLibraries.fromRawResource(getActivity(), R.raw.gestures);
+		if (!gestureLib.load())
+		{
+			getActivity().finish();
+		}
+		
 		// Inflate the layout for this fragment
-		Context context = container.getContext();
 		View view = inflater.inflate(R.layout.log, container, false);
 
+		//create GestureOverlayView for ... gestures, maybe?
 		GestureOverlayView gestureoverlay = (GestureOverlayView) view.findViewById(R.id.gestures);
 		gestureoverlay.addOnGesturePerformedListener(this);
 
+		//create 9 sexy buttons
 		buttons = new ArrayList<Button>();
 		Button marker = null;
 		for (int i = 0; i < 9; i++) {
@@ -62,11 +66,10 @@ public class LogFragment extends Fragment implements
 			buttons.add(marker);
 		}
 
+		//gridview for buttons(markers)
 		GridView gridView = (GridView) view.findViewById(R.id.grid_view);
-
 		gridView.setAdapter(new ButtonAdapter(buttons));
 
-		// return super.onCreateView(inflater, container, savedInstanceState);
 		return view;
 	}
 
@@ -78,12 +81,21 @@ public class LogFragment extends Fragment implements
 		getActivity().setTitle(selestedTask.toString());
 	}
 
+	
 	@Override
 	public void onGesturePerformed(GestureOverlayView overlay, Gesture gesture) {
 		ArrayList<Prediction> predictions = gestureLib.recognize(gesture);
-
+		Log.v("LOGFRAGMENT", "gesture found " + Integer.toString(predictions.size()));
 		for (Prediction prediction : predictions) {
-			if (prediction.score > 1.0) {
+			Log.v("LOGFRAGMENT", "gesture score " + prediction.score);
+			//usually with mouse in emulator you get something between 3 - 7
+			if (prediction.score > 3.0) {
+				Log.v("LOGFRAGMENT", "gesture RECOGNIZED");
+				int position = predictions.indexOf(prediction);
+				
+				 Toast.makeText(getActivity(),"Button clicked",Toast.LENGTH_SHORT).show();
+				 
+				buttons.get(position).performClick();
 				//some action
 			}
 		}

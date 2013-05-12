@@ -39,4 +39,7 @@
     <string name="load">Load</string>
     <string name="start_session">Start New Session</string>
     
+    <string name="add_note">Write note</string>
+    <string name="add_note_btn">Add</string>
+    
 </resources>
