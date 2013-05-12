@@ -2,14 +2,6 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     
-    <EditTextPreference
-        android:key="workspace"
-        android:title="@string/workspace" 
-        android:summary="@string/workspace_detail"
-        android:dialogTitle="@string/workspace"
-        android:dialogMessage=""        
-        android:defaultValue="" />
-    
     <CheckBoxPreference 
         android:key="next_task_auto"
         android:summary="@string/next_task_auto_detail"

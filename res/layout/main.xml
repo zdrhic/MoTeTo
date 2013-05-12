@@ -8,7 +8,7 @@
 	android:id="@+id/tests"
 	android:layout_width="fill_parent"
 	android:layout_height="wrap_content"
-	android:text="@string/tests" />
+	android:text="@string/open_test" />
 <Button
 	android:id="@+id/properties"
 	android:layout_width="fill_parent"

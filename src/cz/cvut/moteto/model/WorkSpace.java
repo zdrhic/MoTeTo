@@ -41,28 +41,12 @@ public class WorkSpace {
 
     public String getWorkspaceFolder() {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(MoTeTo.getAppContext());
-        //return sharedPrefs.getString("workspace", "/");
-        return "/cache/test-data/";
+        return sharedPrefs.getString("workspace", "/");
     }
 
-    public List<Test> getTests() {
-        List<Test> tests = new LinkedList<Test>();
-
-//         tests.add(new Test("test"));
-//         tests.add(new Test("test 2"));
-//         tests.add(new Test("test 3"));
-
-       File f = new File(this.getWorkspaceFolder());
-
-       File[] files = f.listFiles();
-       for (File file : files) {
-    	   String path = file.getName();
-    	   if (path.endsWith(".xml")) {
-    		   Test test = new Test(path.replace(".xml", ""));
-    		   tests.add(test);
-    	   }
-       }
-        return tests;
+    public void setWorkspaceFolder(String folder) {
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(MoTeTo.getAppContext());
+        sharedPrefs.edit().putString("workspace", folder);
     }
 
 	public Test getCurrentTest() {

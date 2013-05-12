@@ -17,7 +17,9 @@ import cz.cvut.moteto.model.Test;
 import cz.cvut.moteto.model.WorkSpace;
 import java.util.List;
 
-public class TestsActivity extends ListActivity {
+import com.kaloer.filepicker.FilePickerActivity;
+
+public class TestsActivity extends FilePickerActivity {
 
     /**
      * Called when the activity is first created.
@@ -28,23 +30,6 @@ public class TestsActivity extends ListActivity {
 
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-
-        ListAdapter adapter = createAdapter();
-        setListAdapter(adapter);
-    }
-
-    @Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
-        Test test = (Test) getListAdapter().getItem(position);
-        Intent myIntent = new Intent(TestsActivity.this, TestActivity.class);
-        myIntent.putExtra("test", test);
-        TestsActivity.this.startActivity(myIntent);
-    }
-
-    protected ListAdapter createAdapter() {
-        List<Test> tests = WorkSpace.getInstance().getTests();
-        ListAdapter adapter = new ArrayAdapter<Test>(this, android.R.layout.simple_list_item_1, tests);
-        return adapter;
     }
 
     @Override

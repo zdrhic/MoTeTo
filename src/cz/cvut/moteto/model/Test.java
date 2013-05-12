@@ -24,10 +24,12 @@ import org.w3c.dom.NodeList;
 public class Test implements Serializable {
 
     private String path;
+    private String name;
 	//private Document document = null;
 
     public Test(String path) {
         this.path = path;
+        this.name = new File(path).getName().replace(".xml", "");
 
     }
 
@@ -36,7 +38,7 @@ public class Test implements Serializable {
     }
 
     public Document load() {
-        String path = WorkSpace.getInstance().getWorkspaceFolder()+this.path+".xml";
+        /*String path = WorkSpace.getInstance().getWorkspaceFolder()+this.path+".xml";*/
         return WorkSpace.loadXML(path);
     }
 
@@ -130,7 +132,7 @@ public class Test implements Serializable {
 //         sessions.add(new Session(test, test.toString() + "session 2", ""));
 //         sessions.add(new Session(test, test.toString() + "session 3", ""));
 
-       File f = new File(WorkSpace.getInstance().getWorkspaceFolder()+this.path+"-sessions");
+       File f = new File(getSessionsDir());
 
        File[] fileArray =  f.listFiles();
        
@@ -144,9 +146,14 @@ public class Test implements Serializable {
 
        return sessions;
     }
+    
+    public String getSessionsDir() {
+    	return new File(path).getParent()+"/"+name+"-sessions";
+    }
+    
 
     public Session getNewSession(String participant){
-    	String sessionPath = String.format("%s/%s-sessions/%02d-%s.xml", WorkSpace.getInstance().getWorkspaceFolder(), path, getSessions().size()+1, participant);
+    	String sessionPath = String.format("%s/%02d-%s.xml", getSessionsDir(), getSessions().size()+1, participant);
         return new Session(this, sessionPath, participant);
     }
 

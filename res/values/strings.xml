@@ -3,6 +3,7 @@
     <string name="app_name">MoTeTo</string>
     <string name="app_name_full">MoTeTo - Mobile Testing Tool v0.1</string>
     
+    <string name="open_test">Open Test</string>
     <string name="tests">Tests</string>
     <string name="test">Test</string>
     <string name="properties">Properties</string>
@@ -36,6 +37,6 @@
     <string name="sessions">Sessions</string>
     
     <string name="load">Load</string>
-    <string name="start_session">Start Session</string>
+    <string name="start_session">Start New Session</string>
     
 </resources>
