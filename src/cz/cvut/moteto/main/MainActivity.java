@@ -35,7 +35,7 @@ public class MainActivity extends Activity {
             	intent.putExtra(FilePickerActivity.EXTRA_FILE_PATH, WorkSpace.getInstance().getWorkspaceFolder());
     			
     			// Show hidden files
-    			//intent.putExtra(FilePickerActivity.EXTRA_SHOW_HIDDEN_FILES, true);
+    			intent.putExtra(FilePickerActivity.EXTRA_SHOW_HIDDEN_FILES, true);
     			
     			// Only make .xml files visible
     			ArrayList<String> extensions = new ArrayList<String>();
