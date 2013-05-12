@@ -32,6 +32,9 @@ import cz.cvut.moteto.model.Task;
 public class LogFragment extends Fragment implements
 		SelectedTaskChangedListener, OnGesturePerformedListener {
 
+	//TODO: solve this shit :D
+	//used while generating buttons
+	private final static int MARKER_BUTTON_SIZE = 150;
 	private GestureLibrary gestureLib;
 	List<Button> buttons;
 
@@ -62,6 +65,8 @@ public class LogFragment extends Fragment implements
 			marker = new Button(getActivity());
 			marker.setText("Marker " + Integer.toString(i));
 			marker.setId(i);
+			marker.setHeight(MARKER_BUTTON_SIZE);
+			marker.setWidth(MARKER_BUTTON_SIZE);
 			marker.setOnClickListener(new MarkerOnClickListener(i));
 			buttons.add(marker);
 		}
