@@ -173,8 +173,6 @@ public class Test implements Serializable {
         Marker marker = new Marker();
         
         loadMarkers(marker, markerNode, map);
-        
-        map.put("default", marker);
 
         return map;
     }
@@ -187,6 +185,7 @@ public class Test implements Serializable {
     			continue;
     		}
     		Element childElement = (Element) childNode;
+    		
     		String gesture = childElement.getAttribute("gesture");
     		if (gesture == null) {
     			if (j < Marker.defaultGestures.length) {
