@@ -26,7 +26,7 @@ public class MarkerOnClickListener implements OnClickListener {
 	@Override
 	public void onClick(View view) {
 		//tady budeou nejaky case a switch hadam
-		//Log.v(TAG, "button index=" + Integer.toString(position));
+		Log.v(TAG, "button index=" + Integer.toString(position));
 		String taskName = activity.getSelectedTask().getPath();
 		String markerName = activity.getSelectedTask().getMarkers().get(position).getName();
 		Note note = new Note(Calendar.getInstance(), taskName+" - "+markerName);

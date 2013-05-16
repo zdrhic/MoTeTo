@@ -37,8 +37,8 @@ import cz.cvut.moteto.model.Task;
 public class LogFragment extends Fragment implements
 		SelectedTaskChangedListener, OnGesturePerformedListener {
 
-	//TODO: solve this shit :D
-	//used while generating buttons
+	// TODO: solve this shit :D
+	// used while generating buttons
 	private final static int MARKER_BUTTON_SIZE = 150;
 	private GestureLibrary gestureLib;
 	List<Button> buttons;
@@ -48,50 +48,56 @@ public class LogFragment extends Fragment implements
 			Bundle savedInstanceState) {
 		final SessionActivity activity = (SessionActivity) getActivity();
 		activity.addSelectedTaskChangedListener(this);
-		
+
 		// Load gestures from raw file 'gestures'
-		gestureLib = GestureLibraries.fromRawResource(getActivity(), R.raw.gestures);
-		if (!gestureLib.load())
-		{
+		gestureLib = GestureLibraries.fromRawResource(getActivity(),
+				R.raw.gestures);
+		if (!gestureLib.load()) {
 			getActivity().finish();
 		}
-		
+
 		// Inflate the layout for this fragment
 		final View view = inflater.inflate(R.layout.log, container, false);
 
-        final Button help = (Button) view.findViewById(R.id.add_note_btn);
-        help.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View arg0) {
-            	EditText t = ((EditText) view.findViewById(R.id.note_text));
-        		String taskName = activity.getSelectedTask().getPath();
-        		String markerName = t.getText().toString();
-        		Note note = new Note(Calendar.getInstance(), taskName+" - "+markerName);
-        		activity.getSession().addNote(note);
-        		Toast.makeText((Context)activity, markerName, Toast.LENGTH_SHORT).show();
-        		t.getText().clear();
-            }
-        });
-		
-		//create GestureOverlayView for ... gestures, maybe?
-		GestureOverlayView gestureoverlay = (GestureOverlayView) view.findViewById(R.id.gestures);
+		final Button help = (Button) view.findViewById(R.id.add_note_btn);
+		help.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View arg0) {
+				EditText t = ((EditText) view.findViewById(R.id.note_text));
+				String taskName = activity.getSelectedTask().getPath();
+				String markerName = t.getText().toString();
+				Note note = new Note(Calendar.getInstance(), taskName + " - "
+						+ markerName);
+				activity.getSession().addNote(note);
+				Toast.makeText((Context) activity, markerName,
+						Toast.LENGTH_SHORT).show();
+				t.getText().clear();
+			}
+		});
+
+		// create GestureOverlayView for ... gestures, maybe?
+		GestureOverlayView gestureoverlay = (GestureOverlayView) view
+				.findViewById(R.id.gestures);
 		gestureoverlay.addOnGesturePerformedListener(this);
 
-		List<Marker> markers = ((SessionActivity)getActivity()).getSelectedTask().getMarkers();
-		
-		//create 9 sexy buttons
+		List<Marker> markers = ((SessionActivity) getActivity())
+				.getSelectedTask().getMarkers();
+
+		// create 9 sexy buttons
 		buttons = new ArrayList<Button>();
-		Button marker = null;
+		Button markerBtn = null;
 		for (int i = 0; i < markers.size(); i++) {
-			marker = new Button(getActivity());
-			marker.setText(markers.get(i).getName());
-			marker.setId(i);
-			marker.setHeight(MARKER_BUTTON_SIZE);
-			marker.setWidth(MARKER_BUTTON_SIZE);
-			marker.setOnClickListener(new MarkerOnClickListener(activity, i));
-			buttons.add(marker);
+			markerBtn = new Button(getActivity());
+			markerBtn.setText(markers.get(i).getName());
+			markerBtn.setId(i);
+			markerBtn.setHeight(MARKER_BUTTON_SIZE);
+			markerBtn.setWidth(MARKER_BUTTON_SIZE);
+
+			markerBtn
+					.setOnClickListener(new MarkerOnClickListener(activity, i));
+			buttons.add(markerBtn);
 		}
 
-		//gridview for buttons(markers)
+		// gridview for buttons(markers)
 		GridView gridView = (GridView) view.findViewById(R.id.grid_view);
 		gridView.setAdapter(new ButtonAdapter(buttons));
 
@@ -106,21 +112,48 @@ public class LogFragment extends Fragment implements
 		getActivity().setTitle(selestedTask.toString());
 	}
 
-	
 	@Override
 	public void onGesturePerformed(GestureOverlayView overlay, Gesture gesture) {
 		ArrayList<Prediction> predictions = gestureLib.recognize(gesture);
-		Log.v("LOGFRAGMENT", "gesture found " + Integer.toString(predictions.size()));
+
 		for (Prediction prediction : predictions) {
 			Log.v("LOGFRAGMENT", "gesture score " + prediction.score);
-			//usually with mouse in emulator you get something between 3 - 7
-			if (prediction.score > 3.0) {
-				
+			// usually with mouse in emulator you get something between 3 - 7
+			if (prediction.score > 5.0) {
+				String gestureName = prediction.name;
+				try {
+					if (gestureName.equals("marker1")) {
+						buttons.get(0).performClick();
+					} else if (gestureName.equals("marker2")) {
+						buttons.get(1).performClick();
+					} else if (gestureName.equals("marker3")) {
+						buttons.get(2).performClick();
+					} else if (gestureName.equals("marker4")) {
+						buttons.get(3).performClick();
+					} else if (gestureName.equals("marker5")) {
+						buttons.get(4).performClick();
+					} else if (gestureName.equals("marker6")) {
+						buttons.get(5).performClick();
+					} else if (gestureName.equals("marker7")) {
+						buttons.get(6).performClick();
+					} else if (gestureName.equals("marker8")) {
+						buttons.get(7).performClick();
+					} else if (gestureName.equals("marker9")) {
+						buttons.get(8).performClick();
+					}
+				} catch (IndexOutOfBoundsException ex) {
+					//Happens when gesture MarkerX is recognized and there are 
+					//less markers in Task Class. 
+					Toast.makeText((Context) getActivity(), "Marker isn't defined",
+							Toast.LENGTH_SHORT).show();
+				}
+
 				int position = predictions.indexOf(prediction);
-				 
-				buttons.get(position).performClick();
+				Log.v("LOGFRAGMENT", "button clicked: " + position);
+				Log.v("LOGFRAGMENT", "gesture name: " + prediction.name);
+//				buttons.get(position).performClick();
 				return;
-				//some action
+				// some action
 			}
 		}
 
