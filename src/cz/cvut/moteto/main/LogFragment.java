@@ -95,10 +95,12 @@ public class LogFragment extends Fragment implements
 			Log.v("LOGFRAGMENT", "gesture score " + prediction.score);
 			//usually with mouse in emulator you get something between 3 - 7
 			if (prediction.score > 3.0) {
-				Log.v("LOGFRAGMENT", "gesture RECOGNIZED");
-				int position = predictions.indexOf(prediction);
 				
-				 Toast.makeText(getActivity(),"Button clicked",Toast.LENGTH_SHORT).show();
+				int position = predictions.indexOf(prediction);
+				Log.v("LOGFRAGMENT", "gesture RECOGNIZED " + Integer.toString(position));
+				
+				
+				 Toast.makeText(getActivity(),"Button clicked " + Integer.toString(position),Toast.LENGTH_SHORT).show();
 				 
 				buttons.get(position).performClick();
 				//some action
