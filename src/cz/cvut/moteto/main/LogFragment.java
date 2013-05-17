@@ -25,6 +25,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 import cz.cvut.moteto.model.Marker;
 import cz.cvut.moteto.model.Note;
@@ -37,17 +39,19 @@ import cz.cvut.moteto.model.Task;
 public class LogFragment extends Fragment implements
 		SelectedTaskChangedListener, OnGesturePerformedListener {
 
-	// TODO: solve this shit :D
+	// TODO: solve button size - find a flexible way for wider set of devices
 	// used while generating buttons
 	private final static int MARKER_BUTTON_SIZE = 150;
+	// Gesture Library for loading and recognizing gestures
 	private GestureLibrary gestureLib;
-	List<Button> buttons;
+	// Array of buttons, used as markers
+	private List<Button> buttons;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		final SessionActivity activity = (SessionActivity) getActivity();
-		activity.addSelectedTaskChangedListener(this);
+		final SessionActivity sessionActivity = (SessionActivity) getActivity();
+		sessionActivity.addSelectedTaskChangedListener(this);
 
 		// Load gestures from raw file 'gestures'
 		gestureLib = GestureLibraries.fromRawResource(getActivity(),
@@ -59,22 +63,39 @@ public class LogFragment extends Fragment implements
 		// Inflate the layout for this fragment
 		final View view = inflater.inflate(R.layout.log, container, false);
 
-		final Button help = (Button) view.findViewById(R.id.add_note_btn);
-		help.setOnClickListener(new View.OnClickListener() {
+		// Set listeners for switching task buttons and set SelectedTask text
+		final ImageButton followingTaskBtn = (ImageButton) view.findViewById(R.id.following_task_btn);
+		followingTaskBtn.setOnClickListener(new ChangeTaskOnClickListener(sessionActivity));		
+		final ImageButton previousTaskBtn = (ImageButton) view.findViewById(R.id.previous_task_btn);
+		previousTaskBtn.setOnClickListener(new ChangeTaskOnClickListener(sessionActivity));
+		TextView selectedTaskTextView = (TextView) view.findViewById(R.id.current_task_text);
+		selectedTaskTextView.setText(sessionActivity.getSelectedTask().getPath());
+		
+		//Replace last characters from Task name by "...".
+		String text = (String) selectedTaskTextView.getText();
+		text = text.substring(0, text.length() - 4);
+		selectedTaskTextView.setText(text + "...");
+		
+		
+		
+		
+		// Button for adding hand-write notes (flexible marker)
+		final Button addNoteBtn = (Button) view.findViewById(R.id.add_note_btn);
+		addNoteBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View arg0) {
-				EditText t = ((EditText) view.findViewById(R.id.note_text));
-				String taskName = activity.getSelectedTask().getPath();
-				String markerName = t.getText().toString();
+				EditText editText = ((EditText) view.findViewById(R.id.note_text));
+				String taskName = sessionActivity.getSelectedTask().getPath();
+				String markerName = editText.getText().toString();
 				Note note = new Note(Calendar.getInstance(), taskName + " - "
 						+ markerName);
-				activity.getSession().addNote(note);
-				Toast.makeText((Context) activity, markerName,
+				sessionActivity.getSession().addNote(note);
+				Toast.makeText((Context) sessionActivity, markerName,
 						Toast.LENGTH_SHORT).show();
-				t.getText().clear();
+				editText.getText().clear();
 			}
 		});
 
-		// create GestureOverlayView for ... gestures, maybe?
+		// create GestureOverlayView for gestures which is top layout
 		GestureOverlayView gestureoverlay = (GestureOverlayView) view
 				.findViewById(R.id.gestures);
 		gestureoverlay.addOnGesturePerformedListener(this);
@@ -82,7 +103,7 @@ public class LogFragment extends Fragment implements
 		List<Marker> markers = ((SessionActivity) getActivity())
 				.getSelectedTask().getMarkers();
 
-		// create 9 sexy buttons
+		// Fill list "buttons" with markers
 		buttons = new ArrayList<Button>();
 		Button markerBtn = null;
 		for (int i = 0; i < markers.size(); i++) {
@@ -93,7 +114,7 @@ public class LogFragment extends Fragment implements
 			markerBtn.setWidth(MARKER_BUTTON_SIZE);
 
 			markerBtn
-					.setOnClickListener(new MarkerOnClickListener(activity, i));
+					.setOnClickListener(new MarkerOnClickListener(sessionActivity, i));
 			buttons.add(markerBtn);
 		}
 
@@ -114,8 +135,11 @@ public class LogFragment extends Fragment implements
 
 	@Override
 	public void onGesturePerformed(GestureOverlayView overlay, Gesture gesture) {
+		
+		//Returns ArrayList of predictions sorted by highest score
 		ArrayList<Prediction> predictions = gestureLib.recognize(gesture);
 
+		// Walk through predictions and find corresponding name to gesture
 		for (Prediction prediction : predictions) {
 			Log.v("LOGFRAGMENT", "gesture score " + prediction.score);
 			// usually with mouse in emulator you get something between 3 - 7
@@ -148,30 +172,18 @@ public class LogFragment extends Fragment implements
 							Toast.LENGTH_SHORT).show();
 				}
 
+				// Debug variable
 				int position = predictions.indexOf(prediction);
+				
 				Log.v("LOGFRAGMENT", "button clicked: " + position);
 				Log.v("LOGFRAGMENT", "gesture name: " + prediction.name);
-//				buttons.get(position).performClick();
+				//When gesture is found - we're done
 				return;
-				// some action
+				
 			}
 		}
 
 	}
 
 }
-/*
- * 
- * vylistování markerů:
- * 
- * task.getMarkers();
- * 
- * if (marker.getChildren().size() > 0) { // je to kategorie s podmarkerama } {
- * // je to jen marker - po kliknutí přidat note }
- * 
- * 
- * 
- * přidání poznámky:
- * 
- * String str = marker.getName(); session.addNote(str);
- */
+
