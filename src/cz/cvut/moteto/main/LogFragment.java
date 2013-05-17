@@ -63,6 +63,7 @@ public class LogFragment extends Fragment implements
 		// Inflate the layout for this fragment
 		final View view = inflater.inflate(R.layout.log, container, false);
 
+		//TODO: Implement the listeners properly.
 		// Set listeners for switching task buttons and set SelectedTask text
 		final ImageButton followingTaskBtn = (ImageButton) view.findViewById(R.id.following_task_btn);
 		followingTaskBtn.setOnClickListener(new ChangeTaskOnClickListener(sessionActivity));		
@@ -72,6 +73,7 @@ public class LogFragment extends Fragment implements
 		selectedTaskTextView.setText(sessionActivity.getSelectedTask().getPath());
 		
 		//Replace last characters from Task name by "...".
+		
 		String text = (String) selectedTaskTextView.getText();
 		text = text.substring(0, text.length() - 4);
 		selectedTaskTextView.setText(text + "...");

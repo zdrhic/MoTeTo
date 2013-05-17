@@ -21,7 +21,7 @@ public class ChangeTaskOnClickListener implements OnClickListener {
 			break;
 		}
 		
-		
+		//TODO: Fix this code. Throws Null Pointer exception on next line. IDK why...
 //		TextView selectedTaskTextView = (TextView) view.findViewById(R.id.current_task_text);
 //		String text = (String) selectedTaskTextView.getText();
 //		text = text.substring(0, text.length() - 4);
