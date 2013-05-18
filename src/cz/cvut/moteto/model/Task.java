@@ -37,4 +37,11 @@ public class Task implements Serializable {
     public List<Marker> getMarkers() {
     	return markers;
     }
+    
+    @Override
+    public boolean equals(Object o) {
+    	Task task = (Task) o;
+    	return task.getPath().equals(this.path);
+    	
+    }
 }

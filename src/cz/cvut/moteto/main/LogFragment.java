@@ -39,18 +39,30 @@ import cz.cvut.moteto.model.Task;
 public class LogFragment extends Fragment implements
 		SelectedTaskChangedListener, OnGesturePerformedListener {
 
+	// Maximum number of chars for TextView (Set in Log.xml to 25), using for
+	// displaying task name minus 3 chars for Task Number
+	private static final int MAX_CHARS = 22;
+
 	// TODO: solve button size - find a flexible way for wider set of devices
 	// used while generating buttons
 	private final static int MARKER_BUTTON_SIZE = 150;
+
 	// Gesture Library for loading and recognizing gestures
 	private GestureLibrary gestureLib;
+
 	// Array of buttons, used as markers
 	private List<Button> buttons;
+
+	// TextView used for displaying current task name
+	private TextView selectedTaskTextView;
+
+	// Session activity for calling Test instance
+	private SessionActivity sessionActivity;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		final SessionActivity sessionActivity = (SessionActivity) getActivity();
+		sessionActivity = (SessionActivity) getActivity();
 		sessionActivity.addSelectedTaskChangedListener(this);
 
 		// Load gestures from raw file 'gestures'
@@ -63,29 +75,48 @@ public class LogFragment extends Fragment implements
 		// Inflate the layout for this fragment
 		final View view = inflater.inflate(R.layout.log, container, false);
 
-		//TODO: Implement the listeners properly.
 		// Set listeners for switching task buttons and set SelectedTask text
-		final ImageButton followingTaskBtn = (ImageButton) view.findViewById(R.id.following_task_btn);
-		followingTaskBtn.setOnClickListener(new ChangeTaskOnClickListener(sessionActivity));		
-		final ImageButton previousTaskBtn = (ImageButton) view.findViewById(R.id.previous_task_btn);
-		previousTaskBtn.setOnClickListener(new ChangeTaskOnClickListener(sessionActivity));
-		TextView selectedTaskTextView = (TextView) view.findViewById(R.id.current_task_text);
-		selectedTaskTextView.setText(sessionActivity.getSelectedTask().getPath());
+		final ImageButton followingTaskBtn = (ImageButton) view
+				.findViewById(R.id.following_task_btn);
+		followingTaskBtn.setOnClickListener(new ChangeTaskOnClickListener(
+				sessionActivity, container));
+
+		final ImageButton previousTaskBtn = (ImageButton) view
+				.findViewById(R.id.previous_task_btn);
+		previousTaskBtn.setOnClickListener(new ChangeTaskOnClickListener(
+				sessionActivity, container));
+
+		selectedTaskTextView = (TextView) view
+				.findViewById(R.id.current_task_text);
+		// get Index of task in tasklist to represent number
+		int taskListSize = sessionActivity.getTest().getTasks().size();
+		int taskIndex = sessionActivity.getTest().getTasks()
+				.indexOf(sessionActivity.getSelectedTask());
+		selectedTaskTextView.setText((Integer.toString(taskIndex+1) ) + ". "
+				+ sessionActivity.getSelectedTask().getPath());
+
+		//Disable buttons, if taskIndex is list boundary
+		if (taskIndex == 0) {
+			previousTaskBtn.setEnabled(false);
+		}
 		
-		//Replace last characters from Task name by "...".
-		
-		String text = (String) selectedTaskTextView.getText();
-		text = text.substring(0, text.length() - 4);
-		selectedTaskTextView.setText(text + "...");
-		
-		
-		
-		
+		if (taskIndex == taskListSize) {
+			followingTaskBtn.setEnabled(false);
+		}
+
+		// Replace last characters from Task name by "..." if is too long
+		if (selectedTaskTextView.getText().length() >= MAX_CHARS) {
+			setSelectedTaskTextViewContent();
+		}
+
+		// TODO: fix list boundaries - disable buttons above
+
 		// Button for adding hand-write notes (flexible marker)
 		final Button addNoteBtn = (Button) view.findViewById(R.id.add_note_btn);
 		addNoteBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View arg0) {
-				EditText editText = ((EditText) view.findViewById(R.id.note_text));
+				EditText editText = ((EditText) view
+						.findViewById(R.id.note_text));
 				String taskName = sessionActivity.getSelectedTask().getPath();
 				String markerName = editText.getText().toString();
 				Note note = new Note(Calendar.getInstance(), taskName + " - "
@@ -102,10 +133,19 @@ public class LogFragment extends Fragment implements
 				.findViewById(R.id.gestures);
 		gestureoverlay.addOnGesturePerformedListener(this);
 
-		List<Marker> markers = ((SessionActivity) getActivity())
-				.getSelectedTask().getMarkers();
+		List<Marker> markers = sessionActivity.getSelectedTask().getMarkers();
 
 		// Fill list "buttons" with markers
+		fillButtonList(markers);
+
+		// GridView for buttons(markers)
+		GridView gridView = (GridView) view.findViewById(R.id.grid_view);
+		gridView.setAdapter(new ButtonAdapter(buttons));
+
+		return view;
+	}
+
+	private void fillButtonList(List<Marker> markers) {
 		buttons = new ArrayList<Button>();
 		Button markerBtn = null;
 		for (int i = 0; i < markers.size(); i++) {
@@ -115,16 +155,17 @@ public class LogFragment extends Fragment implements
 			markerBtn.setHeight(MARKER_BUTTON_SIZE);
 			markerBtn.setWidth(MARKER_BUTTON_SIZE);
 
-			markerBtn
-					.setOnClickListener(new MarkerOnClickListener(sessionActivity, i));
+			markerBtn.setOnClickListener(new MarkerOnClickListener(
+					sessionActivity, i));
 			buttons.add(markerBtn);
 		}
 
-		// gridview for buttons(markers)
-		GridView gridView = (GridView) view.findViewById(R.id.grid_view);
-		gridView.setAdapter(new ButtonAdapter(buttons));
+	}
 
-		return view;
+	private void setSelectedTaskTextViewContent() {
+		String text = (String) selectedTaskTextView.getText();
+		text = text.substring(0, text.length() - 4);
+		selectedTaskTextView.setText(text + "...");
 	}
 
 	public void selectedTaskChanged(Task selestedTask) {
@@ -137,8 +178,8 @@ public class LogFragment extends Fragment implements
 
 	@Override
 	public void onGesturePerformed(GestureOverlayView overlay, Gesture gesture) {
-		
-		//Returns ArrayList of predictions sorted by highest score
+
+		// Returns ArrayList of predictions sorted by highest score
 		ArrayList<Prediction> predictions = gestureLib.recognize(gesture);
 
 		// Walk through predictions and find corresponding name to gesture
@@ -168,24 +209,21 @@ public class LogFragment extends Fragment implements
 						buttons.get(8).performClick();
 					}
 				} catch (IndexOutOfBoundsException ex) {
-					//Happens when gesture MarkerX is recognized and there are 
-					//less markers in Task Class. 
-					Toast.makeText((Context) getActivity(), "Marker isn't defined",
-							Toast.LENGTH_SHORT).show();
+					// Happens when gesture MarkerX is recognized and there are
+					// less markers in Task Class.
+					Toast.makeText((Context) getActivity(),
+							"Marker isn't defined", Toast.LENGTH_SHORT).show();
 				}
 
 				// Debug variable
 				int position = predictions.indexOf(prediction);
-				
-				Log.v("LOGFRAGMENT", "button clicked: " + position);
-				Log.v("LOGFRAGMENT", "gesture name: " + prediction.name);
-				//When gesture is found - we're done
+
+				// When gesture is found - we're done
 				return;
-				
+
 			}
 		}
 
 	}
 
 }
-
