@@ -4,6 +4,8 @@
  */
 package cz.cvut.moteto.main;
 
+import java.io.File;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -64,7 +66,7 @@ public class MapFragment extends Fragment {
 		Element map = (Element) doc.getElementsByTagName("map").item(0);
 
 		String filename = map.getElementsByTagName("filename").item(0).getTextContent();
-		filename = WorkSpace.getInstance().getWorkspaceFolder()+"/"+filename;
+		filename = new File(test.getPath()).getParent()+"/"+filename;
 		Bitmap bm = BitmapFactory.decodeFile(filename);
 
         ImageMap imageView = new ImageMap((Context)getActivity());
