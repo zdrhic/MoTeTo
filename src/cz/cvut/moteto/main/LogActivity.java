@@ -14,6 +14,7 @@ import cz.cvut.moteto.main.NewSessionFragment;
 import cz.cvut.moteto.main.SessionsFragment;
 import cz.cvut.moteto.model.Session;
 import cz.cvut.moteto.model.Test;
+import cz.cvut.moteto.model.WorkSpace;
 import cz.cvut.moteto.utils.TabListener;
 
 /**
@@ -32,7 +33,13 @@ public class LogActivity extends Activity {
         super.onCreate(icicle);
         Intent intent = getIntent();
         this.session = (Session) intent.getSerializableExtra("session");
-        this.session.open();
+        try {
+			this.session.open();
+		} catch (Exception e) {
+			WorkSpace.getInstance().showErrorDialog(this, getString(R.string.error_loading_session), e.getLocalizedMessage());
+			finish();
+			return;
+		}
         //setContentView(R.layout.tests);
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);

@@ -101,7 +101,7 @@ public class Session implements Serializable {
 		return notes;
 	}
     
-    public void open() {
+    public void open() throws Exception {
     	Document doc = WorkSpace.loadXML(path);
     	Element el;
     	

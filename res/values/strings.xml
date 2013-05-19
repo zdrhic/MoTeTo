@@ -42,4 +42,8 @@
     <string name="add_note">Write note</string>
     <string name="add_note_btn">Add</string>
     
+    <string name="ok">OK</string>
+    <string name="error_loading_test">Error loading test!</string>
+    <string name="error_loading_session">Error loading session!</string>
+    
 </resources>

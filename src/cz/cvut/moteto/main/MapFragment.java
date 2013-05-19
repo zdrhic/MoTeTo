@@ -54,7 +54,13 @@ public class MapFragment extends Fragment {
 	
 	public ImageMap createMap() {
 		Test test = WorkSpace.getInstance().getCurrentTest();
-		Document doc = test.getDocument();
+		Document doc = null;
+		try {
+			doc = test.getDocument();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Element map = (Element) doc.getElementsByTagName("map").item(0);
 
 		String filename = map.getElementsByTagName("filename").item(0).getTextContent();

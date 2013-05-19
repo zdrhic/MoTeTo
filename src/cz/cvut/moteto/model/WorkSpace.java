@@ -4,6 +4,10 @@
  */
 package cz.cvut.moteto.model;
 
+import android.R;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.widget.ArrayAdapter;
@@ -57,31 +61,32 @@ public class WorkSpace {
 		this.currentTest = currentTest;
 	}
 
-	public static Document loadXML(String path) {
+	public static Document loadXML(String path) throws Exception {
 	    Document doc = null;
-        try {
-            URL url;
-            url = new URL("file://"+path);
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-            DocumentBuilder db;
-            db = dbf.newDocumentBuilder();
+        URL url;
+        url = new URL("file://"+path);
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilder db;
+        db = dbf.newDocumentBuilder();
 
-            doc = db.parse(new InputSource(url.openStream()));
-            doc.getDocumentElement().normalize();
-
-        } catch (MalformedURLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (ParserConfigurationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (SAXException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        doc = db.parse(new InputSource(url.openStream()));
+        doc.getDocumentElement().normalize();
         return doc;
+	}
+
+	public void showErrorDialog(Context ctx, String title, String msg) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
+
+        builder.setTitle(title);
+        builder.setMessage(msg);
+
+        builder.setPositiveButton(ctx.getString(R.string.ok), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog alert = builder.create();
+        alert.show();
 	}
 }

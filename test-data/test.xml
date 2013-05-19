@@ -3,9 +3,9 @@
     <name>Navigace na Karláku</name>
     <markers>
         <marker id="default">
-            <marker name="Závažný problém s aplikací" gesture="1235789">
+            <marker name="Závažný problém s aplikací">
                 <marker name="Aplikace nejde spustit"></marker>
-                <marker name="Aplikace spadla" gesture="1598753"></marker>
+                <marker name="Aplikace spadla"></marker>
                 <marker name="Aplikace zamrzla"></marker>
             </marker>
             <marker name="Drobný problém s aplikací">
@@ -32,8 +32,8 @@
         </marker>
     </markers>
     <tasks>
-        <task name="Najít záchody na pravém křídle" markers="default"></task>
-        <task name="Najít kancelář 321" markers="default"></task>
+        <task name="Najít záchody na pravém křídle" markers="default" location="8"></task>
+        <task name="Najít kancelář 321" markers="default" location="10"></task>
         <task name="Projít dveřmi na schodiště" markers="default"></task>
         <task name="Jít po schodech do 4. patra" markers="default"></task>
     </tasks>
@@ -48,43 +48,43 @@
     <map>
         <filename>4np.jpg</filename>
         <locations>
-            <location name="Dvere vytahu. 3.patro">
+            <location id="1" name="Dvere vytahu. 3.patro">
                 <x>360</x>
                 <y>990</y>
             </location>
-            <location name="Dvere na chodbu ke schodisti. 3.patro">
+            <location id="2" name="Dvere na chodbu ke schodisti. 3.patro">
                 <x>1390</x>
                 <y>1200</y>
             </location>
-            <location name="Dvere do leveho kridla od schodiste. 3.patro">
+            <location id="3" name="Dvere do leveho kridla od schodiste. 3.patro">
                 <x>1434</x>
                 <y>1212</y>
             </location>
-            <location name="Dvere do praveho kridla od schodiste. 3. patro">
+            <location id="4" name="Dvere do praveho kridla od schodiste. 3. patro">
                 <x>1554</x>
                 <y>1206</y>
             </location>
-            <location name="Dvere z praveho kridla ke schodisti. 3. patro.">
+            <location id="5" name="Dvere z praveho kridla ke schodisti. 3. patro.">
                 <x>1600</x>
                 <y>1218</y>
             </location>
-            <location name="Roh chodby prave kridlo.">
+            <location id="6" name="Roh chodby prave kridlo.">
                 <x>2400</x>
                 <y>1248</y>
             </location>
-            <location name="Media Lab 318.">
+            <location id="7" name="Media Lab 318.">
                 <x>2280</x>
                 <y>1107</y>
             </location>
-            <location name="Zachody prave kridlo.">
+            <location id="8" name="Zachody prave kridlo.">
                 <x>2293</x>
                 <y>985</y>
             </location>
-            <location name="Kancelar pocitacove katedry 319.">
+            <location id="9" name="Kancelar pocitacove katedry 319.">
                 <x>2244</x>
                 <y>1398</y>
             </location>
-            <location name="Kancelar 321.">
+            <location id="10" name="Kancelar 321.">
                 <x>2025</x>
                 <y>1398</y>
             </location>

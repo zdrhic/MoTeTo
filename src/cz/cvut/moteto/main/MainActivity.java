@@ -9,6 +9,9 @@ import cz.cvut.moteto.model.Test;
 import cz.cvut.moteto.model.WorkSpace;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -72,8 +75,14 @@ public class MainActivity extends Activity {
 				if(data.hasExtra(FilePickerActivity.EXTRA_FILE_PATH)) {
 					// Get the file path
 					File f = new File(data.getStringExtra(FilePickerActivity.EXTRA_FILE_PATH));
-					WorkSpace.getInstance().setWorkspaceFolder(f.getParentFile().getAbsolutePath());
 			        Test test = new Test(f.getPath());
+			        try {
+			        	test.open();
+			        } catch(Exception e) {
+			        	WorkSpace.getInstance().showErrorDialog(this, getString(R.string.error_loading_test), e.getLocalizedMessage());
+			            return;
+			        }
+			        WorkSpace.getInstance().setWorkspaceFolder(f.getParentFile().getAbsolutePath());
 			        Intent myIntent = new Intent(MainActivity.this, TestActivity.class);
 			        myIntent.putExtra("test", test);
 			        MainActivity.this.startActivity(myIntent);

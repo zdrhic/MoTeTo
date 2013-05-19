@@ -4,6 +4,7 @@
  */
 package cz.cvut.moteto.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,22 +12,10 @@ import java.util.List;
  *
  * @author Jan Zdrha
  */
-public class Marker {
+public class Marker implements Serializable {
     private List<Marker> children;
     private String name;
     private String gesture;
-    
-    public static final String[] defaultGestures = {
-            "74123",
-            "74159",
-            "12369",
-            "32159",
-            "7412369",
-            "12357",
-            "14789",
-            "14753",
-            "78963"
-        };
     
     public Marker(String name, String gesture) {
     	this.name = name;
