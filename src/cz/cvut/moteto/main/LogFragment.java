@@ -121,8 +121,7 @@ public class LogFragment extends Fragment implements
 						.findViewById(R.id.note_text));
 				String taskName = sessionActivity.getSelectedTask().getPath();
 				String markerName = editText.getText().toString();
-				Note note = new Note(Calendar.getInstance(), taskName + " - "
-						+ markerName);
+				Note note = new Note(Calendar.getInstance(), taskName + Note.DELIMITER + markerName);
 				sessionActivity.getSession().addNote(note);
 				Toast.makeText((Context) sessionActivity, markerName,
 						Toast.LENGTH_SHORT).show();

@@ -47,7 +47,6 @@ public class NewSessionFragment extends Fragment {
             public void onClick(View arg0) {
                 Intent myIntent = new Intent(getActivity(), SessionActivity.class);
                 Session session = test.getNewSession(spinner.getSelectedItem().toString());
-                session.addNote("Ahoj");
                 myIntent.putExtra("session", session);
                 myIntent.putExtra("test", test);
                 getActivity().startActivity(myIntent);

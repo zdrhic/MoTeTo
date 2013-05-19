@@ -16,11 +16,13 @@ public class Task implements Serializable {
     private String path;
     private int number;
     private List<Marker> markers;
+    private int location;
 
-    public Task(int number, String path, List<Marker> markers) {
+    public Task(int number, String path, List<Marker> markers, int location) {
         this.path = path;
         this.number = number;
         this.markers = markers;
+        this.location = location;
     }
 
     /**
@@ -36,6 +38,10 @@ public class Task implements Serializable {
     
     public List<Marker> getMarkers() {
     	return markers;
+    }
+    
+    public int getLocation() {
+    	return location;
     }
     
     @Override

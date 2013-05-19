@@ -77,14 +77,14 @@ public class SessionActivity extends Activity {
 
         tab = actionBar.newTab()
                 .setText(R.string.map)
-                .setTabListener(new TabListener<MapViewFragment>(
-                this, MapViewFragment.class.getName(), MapViewFragment.class));
+                .setTabListener(new TabListener<MapFragment>(
+                this, MapViewFragment.class.getName(), MapFragment.class));
         actionBar.addTab(tab, TAB_MAP);
 
         tab = actionBar.newTab()
                 .setText(R.string.stream)
-                .setTabListener(new TabListener<MapViewFragment>(
-                this, MapViewFragment.class.getName(), MapViewFragment.class));
+                .setTabListener(new TabListener<MapFragment>(
+                this, MapViewFragment.class.getName(), MapFragment.class));
         actionBar.addTab(tab, TAB_STREAM);
 
         //from http://stackoverflow.com/questions/4597690/android-timer-how

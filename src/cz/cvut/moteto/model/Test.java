@@ -6,6 +6,7 @@ package cz.cvut.moteto.model;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -17,6 +18,9 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 /**
  *
  * @author Jan Zdrha
@@ -26,8 +30,10 @@ public class Test implements Serializable {
     private String path;
     private String name;
     List<Task> tasks;
+    List<Location> locations;
     List<String> participants;
     HashMap<String, Marker> markers;
+	private String mapPath = null;
 
     public Test(String path) {
         this.path = path;
@@ -40,9 +46,10 @@ public class Test implements Serializable {
     	markers = loadMarkers(doc);
     	tasks = loadTasks(doc);
     	participants = loadParticipants(doc);
+    	locations = loadLocations(doc);
     }
-    
-    public Document getDocument() throws Exception {
+
+	public Document getDocument() throws Exception {
     	return WorkSpace.loadXML(path);
     }
 
@@ -70,7 +77,34 @@ public class Test implements Serializable {
         return path;
     }
 
-    public List<Task> loadTasks(Document doc) {
+    private List<Location> loadLocations(Document doc) {
+    	List<Location> locs = new ArrayList<Location>();
+    	
+		Element map = (Element) doc.getElementsByTagName("map").item(0);
+
+		if (map != null) {
+			String filename = map.getElementsByTagName("filename").item(0).getTextContent();
+			if (filename != null) {
+				mapPath = new File(this.getPath()).getParent()+"/"+filename;
+			}
+	
+	        NodeList nodes = map.getElementsByTagName("location");
+	        for (int i = 0; i < nodes.getLength(); i+=1) {
+	            Element el = (Element) nodes.item(i);
+	            locs.add(new Location(el.getAttribute("name"),
+	                    Float.parseFloat(el.getElementsByTagName("x").item(0).getTextContent()),
+	                    Float.parseFloat(el.getElementsByTagName("y").item(0).getTextContent())));
+	        }    	
+		}
+    	
+		return locs;
+	}
+    
+    public List<Location> getLocations() {
+		return locations;
+	}
+
+	public List<Task> loadTasks(Document doc) {
        List<Task> tasks = new LinkedList<Task>();
 
        NodeList nodeList = doc.getElementsByTagName("task");
@@ -91,7 +125,12 @@ public class Test implements Serializable {
 				marker = new Marker();
 			}
 			
-			tasks.add(new Task(i+1, el.getAttribute("name"), marker.getChildren()));
+			int location = -1;
+			if (el.hasAttribute("location")) {
+				location = Integer.parseInt(el.getAttribute("location"), 10);
+			}
+			
+			tasks.add(new Task(i+1, el.getAttribute("name"), marker.getChildren(), location));
         }
 
         return tasks;
@@ -177,4 +216,8 @@ public class Test implements Serializable {
     		}
     	}
     }
+
+	public String getMapPath() {
+		return mapPath;
+	}
 }

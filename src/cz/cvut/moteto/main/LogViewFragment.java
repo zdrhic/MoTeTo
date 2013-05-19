@@ -46,10 +46,5 @@ public class LogViewFragment extends ListFragment {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        Session session = (Session) getListAdapter().getItem(position);
-        Intent myIntent = new Intent(getActivity(), LogActivity.class);
-        //myIntent.putExtra("test", test);
-        myIntent.putExtra("session", session);
-        getActivity().startActivity(myIntent);
     }
 }

@@ -4,7 +4,8 @@ import java.io.Serializable;
 import java.util.Calendar;
 
 public class Note implements Serializable {
-    private Calendar time;
+    public static final String DELIMITER = " - ";
+	private Calendar time;
     private String text;
     private int x;
     private int y;

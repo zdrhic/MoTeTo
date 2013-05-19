@@ -35,7 +35,7 @@ public class MarkerOnClickListener implements OnClickListener {
 			Log.v(TAG, "button index=" + Integer.toString(position));
 			String taskName = activity.getSelectedTask().getPath();
 			String markerName = marker.getName();
-			Note note = new Note(Calendar.getInstance(), taskName+" - "+markerName);
+			Note note = new Note(Calendar.getInstance(), taskName + Note.DELIMITER +markerName);
 			activity.getSession().addNote(note);
 			Toast.makeText((Context)activity, markerName, Toast.LENGTH_SHORT).show();
 			activity.setSelectedMarkers(activity.getSelectedTask().getMarkers());
