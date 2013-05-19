@@ -19,8 +19,8 @@ public class Marker implements Serializable {
     
     public Marker(String name, String gesture) {
     	this.name = name;
-    	this.setGesture(gesture);
-    	this.children = new ArrayList<Marker>();
+    	this.gesture = gesture;
+    	children = new ArrayList<Marker>();
     }
     
     public Marker() {
@@ -28,7 +28,7 @@ public class Marker implements Serializable {
     }
     
     public void addChild(Marker m) {
-    	this.children.add(m);
+    	this.getChildren().add(m);
     }
     
     public List<Marker> getChildren() {
@@ -42,8 +42,17 @@ public class Marker implements Serializable {
 	public String getGesture() {
 		return gesture;
 	}
-
-	public void setGesture(String gesture) {
-		this.gesture = gesture;
+	
+	public boolean hasChildren() {
+		return getChildren().size() > 0;
+	}
+	
+	@Override
+	public String toString() {
+		String str = name;
+		if (hasChildren()) {
+			str = "[" + str + "]";
+		}
+		return str;
 	}
 }

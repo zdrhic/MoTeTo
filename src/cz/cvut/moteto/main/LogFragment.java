@@ -59,6 +59,8 @@ public class LogFragment extends Fragment implements
 	// Session activity for calling Test instance
 	private SessionActivity sessionActivity;
 
+	private GridView gridView;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -135,31 +137,31 @@ public class LogFragment extends Fragment implements
 
 		List<Marker> markers = sessionActivity.getSelectedTask().getMarkers();
 
+		gridView = (GridView) view.findViewById(R.id.grid_view);
+		
 		// Fill list "buttons" with markers
 		fillButtonList(markers);
-
-		// GridView for buttons(markers)
-		GridView gridView = (GridView) view.findViewById(R.id.grid_view);
-		gridView.setAdapter(new ButtonAdapter(buttons));
 
 		return view;
 	}
 
-	private void fillButtonList(List<Marker> markers) {
+	public void fillButtonList(List<Marker> markers) {
 		buttons = new ArrayList<Button>();
 		Button markerBtn = null;
 		for (int i = 0; i < markers.size(); i++) {
 			markerBtn = new Button(getActivity());
-			markerBtn.setText(markers.get(i).getName());
+			markerBtn.setText(markers.get(i).toString());
 			markerBtn.setId(i);
 			markerBtn.setHeight(MARKER_BUTTON_SIZE);
 			markerBtn.setWidth(MARKER_BUTTON_SIZE);
 
 			markerBtn.setOnClickListener(new MarkerOnClickListener(
-					sessionActivity, i));
+					sessionActivity, this, i));
 			buttons.add(markerBtn);
 		}
 
+		// GridView for buttons(markers)
+		gridView.setAdapter(new ButtonAdapter(buttons));
 	}
 
 	private void setSelectedTaskTextViewContent() {
@@ -170,6 +172,7 @@ public class LogFragment extends Fragment implements
 
 	public void selectedTaskChanged(Task selestedTask) {
 		this.setCurrentTask(selestedTask);
+		fillButtonList(selestedTask.getMarkers());
 	}
 
 	private void setCurrentTask(Task selestedTask) {

@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import cz.cvut.moteto.main.R;
 import cz.cvut.moteto.main.LogViewFragment;
 import cz.cvut.moteto.main.MapViewFragment;
+import cz.cvut.moteto.model.Marker;
 import cz.cvut.moteto.model.Session;
 import cz.cvut.moteto.model.Task;
 import cz.cvut.moteto.model.Test;
@@ -41,6 +42,7 @@ public class SessionActivity extends Activity {
     private Timer myTimer;
     private static final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
     private Task selectedTask = null;
+    private List<Marker> selectedMarkers = null;
     private List<SelectedTaskChangedListener> selectedTaskListeners;
 
     /**
@@ -174,6 +176,7 @@ public class SessionActivity extends Activity {
 
     public void setSelectedTask(Task task) {
         this.selectedTask = task;
+        this.selectedMarkers = task.getMarkers();
         for (SelectedTaskChangedListener listener : this.selectedTaskListeners) {
             listener.selectedTaskChanged(this.selectedTask);
         }
@@ -183,4 +186,12 @@ public class SessionActivity extends Activity {
         ActionBar actionBar = getActionBar();
         actionBar.setSelectedNavigationItem(tabIndex);
     }
+
+	public List<Marker> getSelectedMarkers() {
+		return selectedMarkers;
+	}
+
+	public void setSelectedMarkers(List<Marker> markers) {
+		this.selectedMarkers = markers;		
+	}
 }
