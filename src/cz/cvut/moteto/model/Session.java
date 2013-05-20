@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
+import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -17,6 +18,9 @@ import java.util.List;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import org.xmlpull.v1.XmlSerializer;
+
+import android.util.Xml;
 
 /**
  *
@@ -127,41 +131,47 @@ public class Session implements Serializable {
     	}
     }
 
-    public void save() {
-    	StringBuilder sb = new StringBuilder();
+    public void save() throws Exception {   	
+    	XmlSerializer xs = Xml.newSerializer();
+    	StringWriter sw = new StringWriter();
+    	xs.setOutput(sw);
+    	xs.startDocument(null, null);
     	
-    	sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<session>\n");
+    	xs.startTag(null, "session");
     	
-    	sb.append("<participant>");
-    	sb.append(participant);
-    	sb.append("</participant>\n");
+    	xs.startTag(null, "participant");
+    	xs.text(participant.toString());
+    	xs.endTag(null, "participant");
     	
-    	sb.append("<beginning>");
-    	sb.append(beginning.getTimeInMillis());
-    	sb.append("</beginning>\n");
+    	xs.startTag(null, "beginning");
+    	xs.text(""+beginning.getTimeInMillis());
+    	xs.endTag(null, "beginning");
     	
-    	sb.append("<end>");
-    	sb.append(end.getTimeInMillis());
-    	sb.append("</end>\n");
+    	xs.startTag(null, "end");
+    	xs.text(""+end.getTimeInMillis());
+    	xs.endTag(null, "end");
     	
-    	sb.append("<notes>\n");
+    	
+    	xs.startTag(null, "notes");
     	
     	for (Note note: notes) {
-    		sb.append(note.toXML());
+    		xs.startTag(null, "note");
+    		xs.attribute(null, "time", note.getTime());
+    		xs.attribute(null, "text", note.getText());
+    		xs.endTag(null, "note");
     	}
     	
-    	sb.append("</notes>\n");
+    	xs.endTag(null, "notes");
     	
-    	sb.append("</session>\n");
+    	xs.endTag(null, "session");
+    	
+    	xs.endDocument();
     	
     	new File(path).getParentFile().mkdirs();
-    	try {
-    		FileWriter fstream = new FileWriter(this.path);
-    		fstream.write(sb.toString());
-    		fstream.close();
-    	} catch(IOException e) {
-    		
-    	}
+
+  		FileWriter fstream = new FileWriter(this.path);
+  		fstream.write(sw.toString());
+   		fstream.close();
     }
 
 }

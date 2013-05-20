@@ -42,5 +42,6 @@
     <string name="ok">OK</string>
     <string name="error_loading_test">Error loading test!</string>
     <string name="error_loading_session">Error loading session!</string>
+    <string name="error_saving_session">Error saving session!</string>
     
 </resources>

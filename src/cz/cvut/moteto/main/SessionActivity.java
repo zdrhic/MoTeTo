@@ -7,6 +7,7 @@ package cz.cvut.moteto.main;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import cz.cvut.moteto.model.Marker;
 import cz.cvut.moteto.model.Session;
 import cz.cvut.moteto.model.Task;
 import cz.cvut.moteto.model.Test;
+import cz.cvut.moteto.model.WorkSpace;
 import cz.cvut.moteto.utils.TabListener;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -130,7 +132,11 @@ public class SessionActivity extends Activity {
         builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 session.end();
-                session.save();
+                try {
+					session.save();
+				} catch (Exception e) {
+					WorkSpace.getInstance().showErrorDialog((Context)getParent(), (String)getText(R.string.error_saving_session), e.getLocalizedMessage());
+				}
                 finish();
                 dialog.dismiss();
             }
