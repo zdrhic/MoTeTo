@@ -27,11 +27,8 @@
     <string name="enabled">Enabled</string>
     <string name="enabled_detail">Enables video stream</string>
     <string name="workspace">Workspace folder</string>
-    <string name="workspace_detail">Sets workspace folder</string>    
-    
-    <string name="help_first">1. Use double flick gesture to navigate among screens</string>
-    <string name="help_second">Tasklist &lt;=&gt; Log &lt;=&gt; Map &lt;=&gt; Stream</string>
-    <string name="help_third">2. Use gestures to insert markers in log screen</string>
+    <string name="workspace_detail">Sets workspace folder</string>
+    <string name="help_third">Use gestures to insert markers in log screen</string>
     
     <string name="new_session">New session</string>
     <string name="sessions">Sessions</string>
